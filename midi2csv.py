@@ -29,7 +29,7 @@ def Melodical(filename):
 
 def Split(filename):
     filename = filename[:-4] + ".csv"
-    with open(filename, 'r') as file:
+    with open("Raw/" + filename, 'r') as file:
         current_track = 2
         for line in file:
             if line[0].isdigit() and int(line[0]) > 1 :
@@ -46,13 +46,12 @@ def Split(filename):
                         output_file.write(line)
 
 
-directory = fsencode("D:/MMP/TechnicalWork")
+directory = "Raw/"
 for file in listdir(directory):
-    filename = fsdecode(file)
-    if filename.endswith(".mid"):
-        print("Converting", filename)
-        Convert(filename)
-        print(filename, "converted")
-        print("Splitting", filename[:-4] + ".csv")
-        Split(filename)
-        print(filename[:-4] + ".csv", "split")
+    if file.endswith(".mid"):
+        print("Converting", file)
+        Convert(directory + file)
+        print(file, "converted")
+        print("Splitting", file[:-4] + ".csv")
+        Split(file)
+        print(file[:-4] + ".csv", "split")

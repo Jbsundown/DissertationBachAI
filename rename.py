@@ -1,3 +1,4 @@
+"""Taken from https://stackoverflow.com/questions/225735/batch-renaming-of-files-in-a-directory"""
 import glob, os
 
 def rename(dir, pattern, titlePattern):

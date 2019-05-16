@@ -4,6 +4,7 @@ import numpy as np
 import os
 import csv2midi
 from datetime import datetime
+from sklearn.model_selection import train_test_split
 from csv import writer, reader
 
 X_train = feed.Scavenge()
@@ -19,12 +20,12 @@ eta = 0.0001
 def get_batches(batch_size):
     #randomly generate a list of numbers to choose from for building the batch.
     starting = np.random.permutation(len(X_train))
-    batch_test = starting[:batch_size+1]
+    batch_test = starting[:batch_size]
     batch_list = np.asarray([X_train[x] for x in batch_test])
     if(batch_size == 1):
         #Hacky way to return a certain formated output for seeding the network.
-        return batch_list[batch_size][:n_steps].reshape(-1, n_steps, n_inputs)
-    return batch_list[batch_size][:n_steps].reshape(-1, n_steps, n_inputs), batch_list[batch_size][n_steps+1:].reshape(-1, n_steps, n_outputs)
+        return batch_list[:, :n_steps].reshape(-1, n_steps, n_inputs)
+    return batch_list[:, :n_steps].reshape(-1, n_steps, n_inputs), batch_list[:, 1:].reshape(-1, n_steps, n_outputs)
 
 
 #Starts building the graph of the network. The inputs and the cells they feed into.
@@ -49,7 +50,7 @@ training_op = optimiser.minimize(loss)
 #Timestamps for logging and filenames.
 now = datetime.utcnow().strftime("%Y%m%d%H%M%S")
 root_logdir = "logs"
-logdir = root_logdir + "/run-" + now
+logdir = "{}/run-{}".format(root_logdir, now)
 
 #Used for TensorBoard, the way to view the graph of the network.
 mse_summary = tf.summary.scalar('MSE', loss)

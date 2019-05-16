@@ -5,7 +5,7 @@ import numpy as np
 def Batch(data):
     batches = []
     tempBatch = []
-    max_size = 40
+    max_size = 100
     for x in range(data.qsize()):
         tempData = data.get()
         #print(tempData)
@@ -27,7 +27,7 @@ def Batch(data):
 
 def Scavenge():
     data = queue.Queue()
-    directory = fsencode("D:/MMP/TechnicalWork/Data")
+    directory = "Data/"
     for file in listdir(directory):
         filename = fsdecode(file)
         if filename.endswith(".csv"):
@@ -52,7 +52,7 @@ def Scavenge():
                         data.put(length_note_combo)
                         tempDataNotes = []
     tempBatch = Batch(data)
-    finalBatch = [batch for batch in tempBatch if len(batch) >= 41]
+    finalBatch = [batch for batch in tempBatch if len(batch) >= 101]
     #for batch in finalBatch:
     #    print(len(batch))
     return finalBatch
